@@ -26,7 +26,7 @@ public class testPDF {
 	private static PdfParams params() {
 		PdfParams params = new PdfParams();
 		params.setUrl("http://news.baidu.com");
-		params.setOutPath("C:/Users/ann/Desktop/testPDF/testdemo.pdf");
+		params.setOutPath("C:/Users/ann/Desktop/testPDF/001.pdf");
 		params.setFileScale(1);
 		params.setUserName("David");
 		params.setDateTime("2017-06-12");
