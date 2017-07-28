@@ -40,6 +40,5 @@ public class testPDF {
 		params.setCmd(cmd);
 		return params;
 
-		//phantomjs C:/Users/ann/workspace/pdf/src/main/webapp/res/js/demo.js http://news.baidu.com C:/Users/ann/Desktop/testPDF/resource.pdf 
 	}
 }
