@@ -3,6 +3,12 @@ package net.print.pdf.util;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * 执行进程
+ * 
+ * @author David
+ * @date   2017年7月28日
+ */
 public class RunTimeShellUtil {
 
 	public static String runShell(String[] cmd) throws IOException {
