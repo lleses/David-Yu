@@ -25,7 +25,8 @@ public class testPDF {
 	/** 模拟测试数据 **/
 	private static PdfParams params() {
 		PdfParams params = new PdfParams();
-		params.setUrl("http://news.baidu.com");
+		params.setUrl("http://192.168.1.7:8081/newSF/html/pdf/printOverviewPDF.jsp?sessionId=2EFDFE12C7FFF6D3B1E56DC4D3C24810");
+		//params.setUrl("http://news.baidu.com");
 		params.setOutPath("C:/Users/ann/Desktop/testPDF/001.pdf");
 		params.setFileScale(1);
 		params.setUserName("David");
@@ -43,6 +44,6 @@ public class testPDF {
 		params.setCmd(cmd);
 		return params;
 
-		//phantomjs C:/Users/ann/workspace/pdf/src/main/webapp/res/js/demo.js "http://news.baidu.com" C:/Users/ann/Desktop/testPDF/resource.pdf 
+		//phantomjs C:/Users/ann/workspace/pdf-utils/src/main/webapp/res/js/phantomPDF.js "http://192.168.1.7:8081/newSF/html/pdf/printOverviewPDF.jsp?sessionId=2EFDFE12C7FFF6D3B1E56DC4D3C24810" C:/Users/ann/Desktop/testPDF/resource.pdf 
 	}
 }
