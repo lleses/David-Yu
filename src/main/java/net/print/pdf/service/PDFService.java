@@ -65,7 +65,7 @@ public class PDFService {
 		}
 
 		// --------------------------分页pdf--------------------------
-		if (params.getWidth() != null && params.getHeight() != null) {
+		if (params.getWidth() != null && params.getHeight() != null && params.getFileScale() == 0) {
 			if (!pagingPDF(params, fileName)) {
 				return;
 			} else {
