@@ -27,10 +27,13 @@ public class testPDF {
 		PdfParams params = new PdfParams();
 		params.setUrl("http://news.baidu.com");
 		params.setOutPath("C:/Users/ann/Desktop/testPDF/001.pdf");
-		params.setFileScale(0);
+		params.setFileScale(1);
 		params.setUserName("David");
 		params.setDateTime("2017-06-12");
 		params.setPdfFolder("C:/Users/ann/Desktop/testPDF/");
+		params.setWidth(400f);
+		params.setHeight(250f);
+		params.setType(1);
 
 		String[] cmd = new String[4];
 		cmd[0] = "phantomjs";

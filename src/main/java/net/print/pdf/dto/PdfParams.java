@@ -30,6 +30,8 @@ public class PdfParams {
 	private String userName;
 	/** 打印的时间 **/
 	private String dateTime;
+	/** PDF类型(0:不启用缩放和分页;1:启用缩放和分页) **/
+	private int type = 0;
 
 	/**
 	 * cmd指令 
@@ -171,9 +173,23 @@ public class PdfParams {
 		this.fileWidthScale = fileWidthScale;
 	}
 
+	/**
+	 * PDF类型(0:不启用缩放和分页;1:启用缩放和分页) 
+	 */
+	public int getType() {
+		return type;
+	}
+
+	/**
+	 * PDF类型(0:不启用缩放和分页;1:启用缩放和分页) 
+	 */
+	public void setType(int type) {
+		this.type = type;
+	}
+
 	@Override
 	public String toString() {
-		return "PdfParams [cmd=" + Arrays.toString(cmd) + ", width=" + width + ", height=" + height + ", url=" + url + ", outPath=" + outPath + ", pdfFolder=" + pdfFolder + ", fileScale=" + fileScale + ", fileWidthScale=" + fileWidthScale + ", userName=" + userName + ", dateTime=" + dateTime + "]";
+		return "PdfParams [cmd=" + Arrays.toString(cmd) + ", width=" + width + ", height=" + height + ", url=" + url + ", outPath=" + outPath + ", pdfFolder=" + pdfFolder + ", fileScale=" + fileScale + ", fileWidthScale=" + fileWidthScale + ", userName=" + userName + ", dateTime=" + dateTime + ", type=" + type + "]";
 	}
 
 }

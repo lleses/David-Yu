@@ -54,25 +54,22 @@ public class PDFService {
 		if (!phantomPDF(params.getCmd())) {
 			return;
 		}
-
 		// --------------------------pdf比率缩放--------------------------
-		if (params.getFileWidthScale() != null && params.getFileScale() == 0) {
+		if (params.getType() == 1) {
 			if (!RatioPDF(params)) {
 				return;
 			} else {
 				fileName = "ratio.pdf";
 			}
 		}
-
 		// --------------------------分页pdf--------------------------
-		if (params.getWidth() != null && params.getHeight() != null && params.getFileScale() == 0) {
+		if (params.getType() == 1) {
 			if (!pagingPDF(params, fileName)) {
 				return;
 			} else {
 				fileName = "paging.pdf";
 			}
 		}
-
 		// --------------------------pdf页头、页尾--------------------------
 		if (!convertPDF(params, fileName)) {
 			return;
