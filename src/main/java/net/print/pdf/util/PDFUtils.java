@@ -25,8 +25,8 @@ import net.print.pdf.dto.PdfParams;
  */
 public class PDFUtils {
 
-	private final int MARGIN_X = 36;
-	private final int MARGIN_Y = 36;
+	private static final int MARGIN_X = 36;
+	private static final int MARGIN_Y = 36;
 
 	public static boolean isTest = false;//是否测试模式,默认为false
 
@@ -124,7 +124,6 @@ public class PDFUtils {
 
 		//组装进程命令
 		String[] cmd = new String[cmd4 == null ? 4 : 5];
-
 		cmd[0] = "phantomjs";
 		cmd[1] = path;
 		cmd[2] = url;
@@ -136,19 +135,64 @@ public class PDFUtils {
 	}
 
 	/**
+	 * 自适应缩放PDF
+	 * 
+	 * @param sourcePath
+	 * 			待处理文件的路径
+	 * @param outPath
+	 * 			输出文件的路径
+	 * @param width
+	 * 			打印的宽度
+	 * @return
+	 */
+	public static boolean adaptiveZoom(String sourcePath, String outPath, float width) {
+		return zoom(sourcePath, outPath, 1, null, width);
+	}
+
+	/**
+	 * 百分比缩放PDF
+	 * 
+	 * @param sourcePath
+	 * 			待处理文件的路径
+	 * @param outPath
+	 * 			输出文件的路径
+	 * @param scale
+	 * 			百分比(0%-200%) 格式类似: 0.1, 0.12,......
+	 * @return
+	 */
+	public static boolean percentageZoom(String sourcePath, String outPath, float scale) {
+		return zoom(sourcePath, outPath, 0, scale, null);
+	}
+
+	/**
 	 * 缩放PDF
 	 * 
 	 * @param sourcePath
-	 * 				待处理文件的路径
+	 * 			待处理文件的路径
 	 * @param outPath
-	 * 				输出文件的路径
+	 * 			输出文件的路径
 	 * @param zoomType
-	 * 				缩放类型:(0:百分百缩放;其他:自适应缩放)
+	 * 			缩放类型:(0:百分百缩放;其他:自适应缩放)
+	 * @param scale
+	 * 			百分比(0%-200%) 格式类似: 0.1, 0.12,......
+	 * @param width
+	 * 			打印的宽度
 	 * @return
 	 */
-	public static boolean zoom(String sourcePath, String outPath, int zoomType, float scale, float width) {
+	public static boolean zoom(String sourcePath, String outPath, int zoomType, Float scale, Float width) {
+		//检查参数是否正确
+		if (zoomType == 0 && (scale == null || scale > 2 || scale <= 0)) {
+			return false;
+		}
+		if (zoomType != 0 && width == null) {
+			return false;
+		}
 		//检查文件是否存在		
+		if (checkFileIsExist(sourcePath)) {
+			return false;
+		}
 
+		//读取PDF
 		PdfReader reader = null;
 		try {
 			reader = new PdfReader(sourcePath);
@@ -156,25 +200,21 @@ public class PDFUtils {
 			e.printStackTrace();
 			return false;
 		}
-		if (reader == null) {
-			return false;
-		}
 		Rectangle pagesize = reader.getPageSize(1);
-		float w = pagesize.getWidth();
-		float h = pagesize.getHeight();
-		float pageWidth = 0;
-		float pageHeight = 0;
-		float zoom = 0;
-		if (zoomType == 0) {// Scale 0%---100%
+
+		//自适应缩放
+		float pageWidth = width;
+		float zoom = pageWidth / pagesize.getWidth();
+		float pageHeight = pagesize.getHeight() * zoom;
+
+		//百分比缩放(0%---100%)
+		if (zoomType == 0) {
 			zoom = scale;
-			pageWidth = (int) (w * zoom);
-			pageHeight = (int) (h * zoom);
-		} else {// fit to width
-			//TODO
-//			pageWidth = params.getWidth() - MARGIN_X * 2;
-			zoom = pageWidth / w;
-			pageHeight = (int) (h * zoom);
+			pageWidth = pagesize.getWidth() * zoom;
+			pageHeight = pagesize.getHeight() * zoom;
 		}
+
+		//开始生成PDF
 		Document document = new Document(new Rectangle(pageWidth, pageHeight));
 		PdfWriter writer = null;
 		try {
@@ -187,18 +227,10 @@ public class PDFUtils {
 		if (writer == null) {
 			return false;
 		}
-
-		// step 3
 		document.open();
-
-		// step 4
 		PdfContentByte content = writer.getDirectContent();
 		PdfImportedPage page = writer.getImportedPage(reader, 1);
-
-		/**在原页面中按纸张大小,按比率缩放,不旋转**/
-		content.addTemplate(page, zoom, 0, 0, zoom, 0, 0);
-
-		// step 5
+		content.addTemplate(page, zoom, 0, 0, zoom, 0, 0);//在原页面中按纸张大小,按比率缩放,不旋转
 		document.close();
 		reader.close();
 		return true;
@@ -347,14 +379,16 @@ public class PDFUtils {
 		return true;
 	}
 
+	//TODO
 	private void createFolder(String folder) throws Exception {
 		File file = new File(folder);
 		if (!file.exists()) {
 			file.mkdirs();
 		}
 	}
-	
-	
+
+	//TODO
+
 	/**
 	 * pdf添加页头，页尾等信息
 	 * 
@@ -395,5 +429,14 @@ public class PDFUtils {
 			document.newPage();
 		}
 		document.close();
+	}
+
+	/** 检查文件是否存在 **/
+	private static boolean checkFileIsExist(String path) {
+		File file = new File(path);
+		if (file != null && file.exists()) {
+			return true;
+		}
+		return false;
 	}
 }

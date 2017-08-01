@@ -1,0 +1,532 @@
+<!DOCTYPE html><html ng-app="projectApp" class="ng-scope"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Smartflow</title>
+<!--变量定义文件-->
+<link rel="stylesheet" type="text/css" href="font-awesome.css">
+<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="animate.css">
+<link rel="stylesheet" type="text/css" href="chosen.css">
+<link rel="stylesheet" type="text/css" href="loading-bar.min.css">
+<link rel="stylesheet" type="text/css" href="multiple-select.css">
+<link rel="stylesheet" type="text/css" href="jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="angular.treeview.css">
+<link rel="stylesheet" type="text/css" href="opensans.css">
+<link rel="stylesheet" type="text/css" href="global.css">
+<!--CSS文件的导入-->
+<link rel="stylesheet" type="text/css" href="overview.css">
+<style type="text/css">
+.sf-table .table > thead > tr > th{
+text-align:center;height:25px;line-height: 25px; padding: 0px; font-weight: 400;
+ color: #FFFFFF; cursor: pointer; background-color: #666666!important; border-bottom: none; border-right: 1px solid #fff;}
+.sf-table .table > tbody > tr:nth-child(odd) td{background-color:#e3e3e3!important;}
+.sf-table .table > tbody > tr:nth-child(even){background-color:#f2f2f2!important;}
+
+</style>
+</head>
+<body printstatus="true" style="width: 100%;min-width: auto;max-width: none;display: table;">
+<div id="overview" class="containerWrap ng-scope" >
+	<div class="pull-left img-wrap" style="padding-top:20px;width: 100%;">
+		<img width="134px" height="62px" src="http://192.168.1.7:8080/SmartFold2/images/compImg.jpg">
+	</div>
+	<div  class="ng-scope">
+<div class="sf-table table-responsive ng-scope" >
+	<table id="overviewTable" class="table table-striped task-table">
+		<thead>
+			<tr>
+				<th  class="ng-binding ng-scope" style="width: 120px; min-width: 120px;">
+					PID <i class="fa  fa-angle-up ng-hide"  ></i>
+				</th>
+				<th  class="ng-binding ng-scope">
+					Project Name <i class="fa  fa-angle-up ng-hide"  ></i>
+				</th>
+				<th     class="ng-binding ng-scope">
+					Project Type <i class="fa  fa-angle-up ng-hide"  ></i>
+				</th>
+				<th  class="ng-binding ng-scope">
+					Cycle Number <i class="fa  fa-angle-up ng-hide"  ></i>
+				</th>
+				<th  class="ng-binding ng-scope">
+					Approval Task (status/owner) <i class="fa  fa-angle-up ng-hide"  ></i>
+				</th>
+				<th  class="ng-binding ng-scope">
+					Approval Task (name) <i class="fa  fa-angle-up ng-hide"  ></i>
+				</th><th     class="ng-binding ng-scope">
+					Active Task / SP (status/owner) <i class="fa  fa-angle-up ng-hide"  ></i>
+				</th><th     class="ng-binding ng-scope">
+					Active Task / SP (name) <i class="fa  fa-angle-up ng-hide"  ></i>
+				</th><th     class="ng-binding ng-scope">
+					Active Task / SP (actual start) <i class="fa  fa-angle-up ng-hide"  ></i>
+				</th><th     class="ng-binding ng-scope">
+					Active Task / SP (expected end) <i class="fa  fa-angle-up ng-hide"  ></i>
+				</th><th     class="ng-binding ng-scope">
+					Active Tasks All Levels (status/owner) <i class="fa  fa-angle-up ng-hide"  ></i>
+				</th><th     class="ng-binding ng-scope">
+					Active Tasks All Levels (name) <i class="fa  fa-angle-up ng-hide"  ></i>
+				</th><th     class="ng-binding ng-scope">
+					Active Tasks All Levels (actual start) <i class="fa  fa-angle-up ng-hide" ></i>
+				</th><th     class="ng-binding ng-scope">
+					Active Tasks All Levels (expected end) <i class="fa  fa-angle-up ng-hide" ></i>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr  class="ng-scope">
+				<td class="text-center ng-scope"    style="width: 120px; min-width: 120px;">
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a >307</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a  >task_code_scheduled</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">O master project type</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">1</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td>
+			</tr>
+			<tr  class="ng-scope">
+				<td class="text-center ng-scope"    style="width: 120px; min-width: 120px;">
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a >307</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a  >task_code_scheduled</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">O master project type</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">1</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td>
+			</tr><tr  class="ng-scope">
+				<td class="text-center ng-scope"    style="width: 120px; min-width: 120px;">
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a >307</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a  >task_code_scheduled</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">O master project type</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">1</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td>
+			</tr><tr  class="ng-scope">
+				<td class="text-center ng-scope"    style="width: 120px; min-width: 120px;">
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a >307</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a  >task_code_scheduled</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">O master project type</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">1</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td>
+			</tr><tr  class="ng-scope">
+				<td class="text-center ng-scope"    style="width: 120px; min-width: 120px;">
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a >307</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a  >task_code_scheduled</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">O master project type</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">1</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td>
+			</tr><tr  class="ng-scope">
+				<td class="text-center ng-scope"    style="width: 120px; min-width: 120px;">
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a >307</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a  >task_code_scheduled</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">O master project type</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">1</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td>
+			</tr><tr  class="ng-scope">
+				<td class="text-center ng-scope"    style="width: 120px; min-width: 120px;">
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a >307</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a  >task_code_scheduled</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">O master project type</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">1</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td>
+			</tr><tr  class="ng-scope">
+				<td class="text-center ng-scope"    style="width: 120px; min-width: 120px;">
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a >307</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a  >task_code_scheduled</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">O master project type</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">1</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td>
+			</tr><tr  class="ng-scope">
+				<td class="text-center ng-scope"    style="width: 120px; min-width: 120px;">
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a >307</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a  >task_code_scheduled</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">O master project type</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">1</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td>
+			</tr><tr  class="ng-scope">
+				<td class="text-center ng-scope"    style="width: 120px; min-width: 120px;">
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a >307</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a  >task_code_scheduled</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">O master project type</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">1</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td>
+			</tr><tr  class="ng-scope">
+				<td class="text-center ng-scope"    style="width: 120px; min-width: 120px;">
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a >307</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a  >task_code_scheduled</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">O master project type</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">1</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td>
+			</tr><tr  class="ng-scope">
+				<td class="text-center ng-scope"    style="width: 120px; min-width: 120px;">
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a >307</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a  >task_code_scheduled</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">O master project type</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">1</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td>
+			</tr><tr  class="ng-scope">
+				<td class="text-center ng-scope"    style="width: 120px; min-width: 120px;">
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a >307</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a  >task_code_scheduled</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">O master project type</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">1</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td>
+			</tr><tr  class="ng-scope">
+				<td class="text-center ng-scope"    style="width: 120px; min-width: 120px;">
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a >307</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a  >task_code_scheduled</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">O master project type</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">1</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td>
+			</tr><tr  class="ng-scope">
+				<td class="text-center ng-scope"    style="width: 120px; min-width: 120px;">
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a >307</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"><a  >task_code_scheduled</a></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">O master project type</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope">1</div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><table style="width:100%; height:100%;" class="ng-scope"></table></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td><td class="text-center ng-scope"   >
+					<div  class="ng-isolate-scope"><div class="ng-scope"></div></div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+</div>
+</div>
+
+</body></html>

@@ -11,18 +11,27 @@ public class testPDF {
 	public static void main(String[] args) {
 		PDFUtils.isTest = true;
 		// 启动demo
-		demo();
+		demo2();
 		System.out.println("end..");
 	}
 
 	/** 爬虫生成pdf+后台处理pdf **/
 	private static void demo() {
 		// 模拟测试数据
-		String url = "http://news.baidu.com";
+		//		String url = "http://news.baidu.com";
+		String url = "file:///C:/Users/ann/workspace/pdf-utils/src/main/webapp/html/test.html";
 		String outPath = "C:/Users/ann/Desktop/testPDF/001.pdf";
 		PDFUtils.phantomjs(url, outPath);
 		//		PDFUtils.phantomjs(url, outPath, format);
 		//		PDFUtils.phantomjs(url, outPath, width, height);
+	}
+
+	/** 爬虫生成pdf+后台处理pdf **/
+	private static void demo2() {
+		// 模拟测试数据
+		String sourcePath = "C:/Users/ann/Desktop/testPDF/001.pdf";
+		String outPath = "C:/Users/ann/Desktop/testPDF/002.pdf";
+		PDFUtils.zoom(sourcePath, outPath, 1, 0.5f, 200f);
 	}
 
 	/** 模拟测试数据 **/
