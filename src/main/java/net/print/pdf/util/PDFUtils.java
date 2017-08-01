@@ -353,4 +353,47 @@ public class PDFUtils {
 			file.mkdirs();
 		}
 	}
+	
+	
+	/**
+	 * pdf添加页头，页尾等信息
+	 * 
+	 * @param outputFilePath
+	 * 				输出路径
+	 * @param sourceFilePath
+	 * 				源文件路径
+	 */
+	public void headFootPdf(String outputFilePath, String sourceFilePath, String header, String leftBottomContent) throws IOException, DocumentException {
+		PdfReader reader = new PdfReader(sourceFilePath);
+		int margin_x = 36;
+		int margin_y = 36;
+		int num = reader.getNumberOfPages();
+		Rectangle pag = reader.getPageSizeWithRotation(1);
+		float width = pag.getWidth();
+		if (width < 240) {
+			width = 240;
+		}
+		Rectangle rec = new Rectangle(width + 2 * margin_x, pag.getHeight() + 2 * margin_y);
+
+		Document document = new Document(rec);
+		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(outputFilePath));
+		// 页头页尾
+		PdfHeadFoot headerFooter = new PdfHeadFoot(header, reader.getNumberOfPages(), leftBottomContent);
+		writer.setPageEvent(headerFooter);
+		document.open();
+
+		PdfImportedPage page = null;
+		PdfContentByte content = writer.getDirectContent();
+		for (int i = 1; i <= num; i++) {
+			if (i != num) {
+				Rectangle lastPag = reader.getPageSizeWithRotation(i + 1);
+				Rectangle lastRec = new Rectangle(lastPag.getWidth() + 2 * margin_x, lastPag.getHeight() + 2 * margin_y);
+				document.setPageSize(lastRec);
+			}
+			page = writer.getImportedPage(reader, i);
+			content.addTemplate(page, margin_x, margin_y);
+			document.newPage();
+		}
+		document.close();
+	}
 }
