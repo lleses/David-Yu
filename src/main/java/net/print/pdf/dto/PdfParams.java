@@ -34,6 +34,22 @@ public class PdfParams {
 	private int type = 0;
 
 	/**
+	 * 缩放比例(0-100%) 
+	 */
+	public Float getScale() {
+		if (fileWidthScale == null) {
+			return 1f;
+		}
+		if (0 < fileWidthScale && fileWidthScale <= 1) {
+			return fileWidthScale;
+		}
+		if (1 < fileWidthScale && fileWidthScale <= 100) {
+			return fileWidthScale / 100;
+		}
+		return 1f;
+	}
+
+	/**
 	 * cmd指令 
 	 */
 	public String[] getCmd() {

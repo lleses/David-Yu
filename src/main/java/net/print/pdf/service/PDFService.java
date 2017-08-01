@@ -115,7 +115,7 @@ public class PDFService {
 		float pageHeight = 0;
 		float zoom = 0;
 		if (params.getFileScale() == 0) {// Scale 0%---100%
-			zoom = params.getFileWidthScale();
+			zoom = params.getScale();
 			pageWidth = (int) (width * zoom);
 			pageHeight = (int) (heigth * zoom);
 		} else {// fit to width
