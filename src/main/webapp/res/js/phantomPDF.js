@@ -60,7 +60,7 @@ page.open(url, function (status) {
 	    	}else{
 	    		page.paperSize = {
 				    	width : param[1],
-				    	height :param[2]*0.78
+				    	height :param[2]*0.76
 		    	};
 	    	}
 	    	page.render(outPath);
