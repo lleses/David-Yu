@@ -9,9 +9,29 @@ import java.io.InputStream;
  * @author David
  * @date   2017年7月28日
  */
-public class RunTimeShellUtil {
+public class RunShell {
 
-	public static String runShell(String[] cmd) throws IOException {
+	public static boolean run(String[] cmd) {
+		String result = "";
+		try {
+			result = execute(cmd);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		if (result != null && result.length() > 0 && (result.indexOf("timeout") >= 0 || result.indexOf("FAIL to load") >= 0)) {
+			try {
+				throw new Exception("load file failed!");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
+		return true;
+	}
+
+	/** 执行shell **/
+	private static String execute(String[] cmd) throws IOException {
 		ProcessBuilder pb = new ProcessBuilder(cmd).redirectErrorStream(true);
 		Process child = pb.start();
 		InputStream in = child.getInputStream();
