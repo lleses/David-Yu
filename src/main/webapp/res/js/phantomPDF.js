@@ -25,7 +25,7 @@ function waitFor(testFx, onReady, timeOutMillis) {
 
 page.open(url, function (status) {
 	if (status !== 'success') {
-        console.log('FAIL to load');
+        console.log('fail to load Url');
         phantom.exit();
     } else {
     	var param;
@@ -47,8 +47,8 @@ page.open(url, function (status) {
 	        });
 	    	return param[0];
 	    }, function() {
-	    	console.log(param[1]);
-	    	console.log(param[2]);
+	    	//console.log("width:" + param[1]);
+	    	//console.log("height:" + param[2]);
 	    	page.viewportSize = {
 	    			width :300,
 	    			height : 300
@@ -65,8 +65,8 @@ page.open(url, function (status) {
 	    	}
 	    	page.render(outPath);
 	    	page.close();
+	    	console.log('handle success');
     		phantom.exit();
-    		console.log('render ok');
 	    });
     }
 });
