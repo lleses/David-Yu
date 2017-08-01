@@ -50,8 +50,8 @@ page.open(url, function (status) {
 	    	console.log(param[1]);
 	    	console.log(param[2]);
 	    	page.viewportSize = {
-	    			width :param[1],
-	    			height : param[2]
+	    			width :300,
+	    			height : 300
 	    	};
 	    	if (system.args.length > 3) {
 	    	    size = system.args[3].split('*');
@@ -60,7 +60,7 @@ page.open(url, function (status) {
 	    	}else{
 	    		page.paperSize = {
 				    	width : param[1],
-				    	height :param[2]
+				    	height :param[2]*0.78
 		    	};
 	    	}
 	    	page.render(outPath);

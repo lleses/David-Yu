@@ -44,6 +44,12 @@ public class testPDF {
 		params.setCmd(cmd);
 		return params;
 
-		//phantomjs C:/Users/ann/workspace/pdf-utils/src/main/webapp/res/js/phantomPDF.js "http://192.168.1.7:8081/newSF/html/pdf/printOverviewPDF.jsp?sessionId=2EFDFE12C7FFF6D3B1E56DC4D3C24810" C:/Users/ann/Desktop/testPDF/resource.pdf 
+		//phantomjs C:/Users/ann/workspace/pdf-utils/src/main/webapp/res/js/phantomPDF.js "http://192.168.1.7:8081/newSF/html/pdf/printOverviewPDF.jsp?sessionId=23174A281C2B75F2BC980B61A47E24AC" C:/Users/ann/Desktop/testPDF/resource.pdf 
+		//phantomjs C:/Users/ann/workspace/pdf-utils/src/main/webapp/res/js/phantomPDF.js "file:///C:/Users/ann/workspace/test/web/01.html" C:/Users/ann/Desktop/testPDF/overview.pdf 
+		//phantomjs C:/Users/ann/workspace/pdf-utils/src/main/webapp/res/js/phantomPDF.js "file:///C:/Users/ann/workspace/test/web/test.html" C:/Users/ann/Desktop/testPDF/overview.pdf 
+		
+		
+		
+		//phantomjs C:/Users/ann/workspace/pdf-utils/src/main/webapp/res/js/phantomPDF.js "http://news.baidu.com/" C:/Users/ann/Desktop/testPDF/baidu.pdf 
 	}
 }
