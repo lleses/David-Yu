@@ -28,6 +28,8 @@ public class PDFUtils {
 	private final int MARGIN_X = 36;
 	private final int MARGIN_Y = 36;
 
+	public static boolean isTest = false;//是否测试模式,默认为false
+
 	/**
 	 * 爬虫生成PDF
 	 * 
@@ -114,10 +116,17 @@ public class PDFUtils {
 		if (format != null) {
 			cmd4 = format;
 		}
+
+		String path = "C:/Users/ann/workspace/pdf-utils/src/main/webapp/res/js/phantomPDF.js";
+		if (isTest) {
+			path = "C:/Users/ann/workspace/pdf-utils/src/main/webapp/res/js/demo.js";
+		}
+
 		//组装进程命令
 		String[] cmd = new String[cmd4 == null ? 4 : 5];
+
 		cmd[0] = "phantomjs";
-		cmd[1] = "C:/Users/ann/workspace/pdf-utils/src/main/java/net/print/pdf/service/phantomPDF.js";
+		cmd[1] = path;
 		cmd[2] = url;
 		cmd[3] = outPath;
 		if (cmd4 != null) {
@@ -126,36 +135,50 @@ public class PDFUtils {
 		return RunShell.run(cmd);
 	}
 
-	/** pdf比率缩放 **/
-	private boolean RatioPDF(PdfParams params) {
+	/**
+	 * 缩放PDF
+	 * 
+	 * @param sourcePath
+	 * 				待处理文件的路径
+	 * @param outPath
+	 * 				输出文件的路径
+	 * @param zoomType
+	 * 				缩放类型:(0:百分百缩放;其他:自适应缩放)
+	 * @return
+	 */
+	public static boolean zoom(String sourcePath, String outPath, int zoomType, float scale, float width) {
+		//检查文件是否存在		
+
 		PdfReader reader = null;
 		try {
-			reader = new PdfReader(params.getPdfFolder() + "resource.pdf");
+			reader = new PdfReader(sourcePath);
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
 		if (reader == null) {
 			return false;
 		}
 		Rectangle pagesize = reader.getPageSize(1);
-		float width = pagesize.getWidth();
-		float heigth = pagesize.getHeight();
+		float w = pagesize.getWidth();
+		float h = pagesize.getHeight();
 		float pageWidth = 0;
 		float pageHeight = 0;
 		float zoom = 0;
-		if (params.getFileScale() == 0) {// Scale 0%---100%
-			zoom = params.getScale();
-			pageWidth = (int) (width * zoom);
-			pageHeight = (int) (heigth * zoom);
+		if (zoomType == 0) {// Scale 0%---100%
+			zoom = scale;
+			pageWidth = (int) (w * zoom);
+			pageHeight = (int) (h * zoom);
 		} else {// fit to width
-			pageWidth = params.getWidth() - MARGIN_X * 2;
-			zoom = pageWidth / width;
-			pageHeight = (int) (heigth * zoom);
+			//TODO
+//			pageWidth = params.getWidth() - MARGIN_X * 2;
+			zoom = pageWidth / w;
+			pageHeight = (int) (h * zoom);
 		}
 		Document document = new Document(new Rectangle(pageWidth, pageHeight));
 		PdfWriter writer = null;
 		try {
-			writer = PdfWriter.getInstance(document, new FileOutputStream(params.getPdfFolder() + "ratio.pdf"));
+			writer = PdfWriter.getInstance(document, new FileOutputStream(outPath));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (DocumentException e) {
