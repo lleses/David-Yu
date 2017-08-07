@@ -31,7 +31,7 @@ public class PDFUtils {
 	public static boolean isTest = false;//是否测试模式,默认为false
 
 	/**
-	 * 创建PDF
+	 * 创建PDF(不分页)
 	 * 
 	 * @param url
 	 * 			要打印的页面url路径
@@ -39,12 +39,12 @@ public class PDFUtils {
 	 * 			输出路径
 	 * @return
 	 */
-	public static boolean create(String url, String outPath) {
-		return create(url, outPath, null, null, null);
+	public static boolean createNotPagingPDF(String url, String outPath) {
+		return createPDF(url, outPath, null, null, null);
 	}
 
 	/**
-	 * 根据打印格式创建PDF
+	 * 创建PDF(根据格式分页)
 	 * 
 	 * @param url
 	 * 			要打印的页面url路径
@@ -54,10 +54,10 @@ public class PDFUtils {
 	 * 			打印格式:'A3', 'A4', 'A5', 'Legal', 'Letter', 'Tabloid'.
 	 * @return
 	 */
-	public static boolean createByFormat(String url, String outPath, String format) {
+	public static boolean createPagingPDFByFormat(String url, String outPath, String format) {
 		//检查打印格式是否正确
 		if (checkFormat(format)) {
-			return create(url, outPath, null, null, format);
+			return createPDF(url, outPath, null, null, format);
 		}
 		return false;
 	}
@@ -74,7 +74,7 @@ public class PDFUtils {
 	}
 
 	/**
-	 * 根据宽高创建PDF
+	 * 创建PDF(根据宽高分页)
 	 * 
 	 * @param url
 	 * 			要打印的页面url路径
@@ -86,8 +86,8 @@ public class PDFUtils {
 	 * 			每页高度
 	 * @return
 	 */
-	public static boolean createByWidthAndHeight(String url, String outPath, int width, int height) {
-		return create(url, outPath, width, height, null);
+	public static boolean createPagingPDFByWidthAndHeight(String url, String outPath, int width, int height) {
+		return createPDF(url, outPath, width, height, null);
 	}
 
 	/**
@@ -105,13 +105,12 @@ public class PDFUtils {
 	 * 			打印格式:'A3', 'A4', 'A5', 'Legal', 'Letter', 'Tabloid'.
 	 * @return
 	 */
-	private static boolean create(String url, String outPath, Integer width, Integer height, String format) {
+	private static boolean createPDF(String url, String outPath, Integer width, Integer height, String format) {
 		if (url == null || outPath == null) {
 			return false;
 		}
-		//组装phantomjs的运行指令
-		String[] cmd = assemblyCmd(url, outPath, width, height, format);
-		return RunShell.run(cmd);
+		String[] cmd = assemblyCmd(url, outPath, width, height, format);//组装phantomjs的运行指令
+		return RunShell.run(cmd);//运行
 	}
 
 	/** 组装phantomjs的运行指令 **/
@@ -127,7 +126,7 @@ public class PDFUtils {
 		//组装进程命令
 		String[] cmd = new String[cmd4 == null ? 4 : 5];
 		cmd[0] = "phantomjs";
-		cmd[1] = getJsPath();
+		cmd[1] = getPhantomJsPath();//获取爬虫Js文件路径
 		cmd[2] = url;
 		cmd[3] = outPath;
 		if (cmd4 != null) {
@@ -136,8 +135,8 @@ public class PDFUtils {
 		return cmd;
 	}
 
-	/** 获取Js路径 **/
-	private static String getJsPath() {
+	/** 获取爬虫Js文件路径 **/
+	private static String getPhantomJsPath() {
 		String path = PDFUtils.class.getResource("").getPath();
 		if (isTest) {
 			path += "demo.js";
@@ -148,7 +147,7 @@ public class PDFUtils {
 	}
 
 	/**
-	 * 自适应缩放PDF
+	 * 缩放PDF(通过自适应)
 	 * 
 	 * @param sourcePath
 	 * 			待处理文件的路径
@@ -158,12 +157,12 @@ public class PDFUtils {
 	 * 			打印的宽度
 	 * @return
 	 */
-	public static boolean adaptiveZoom(String sourcePath, String outPath, float width) {
-		return zoom(sourcePath, outPath, 1, null, width);
+	public static boolean zoomPDByAdaptive(String sourcePath, String outPath, float width) {
+		return zoomPDF(sourcePath, outPath, 1, null, width);
 	}
 
 	/**
-	 * 百分比缩放PDF
+	 * 缩放PDF(根据百分比)
 	 * 
 	 * @param sourcePath
 	 * 			待处理文件的路径
@@ -173,8 +172,8 @@ public class PDFUtils {
 	 * 			百分比(0%-200%) 格式类似: 0.1, 0.12,......
 	 * @return
 	 */
-	public static boolean percentageZoom(String sourcePath, String outPath, float scale) {
-		return zoom(sourcePath, outPath, 0, scale, null);
+	public static boolean zoomPDFByPercentage(String sourcePath, String outPath, float scale) {
+		return zoomPDF(sourcePath, outPath, 0, scale, null);
 	}
 
 	/**
@@ -192,7 +191,7 @@ public class PDFUtils {
 	 * 			打印的宽度
 	 * @return
 	 */
-	public static boolean zoom(String sourcePath, String outPath, int zoomType, Float scale, Float width) {
+	private static boolean zoomPDF(String sourcePath, String outPath, int zoomType, Float scale, Float width) {
 		//检查参数是否正确
 		if (zoomType == 0 && (scale == null || scale > 2 || scale <= 0)) {
 			return false;
