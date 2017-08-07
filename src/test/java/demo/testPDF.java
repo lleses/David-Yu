@@ -9,29 +9,31 @@ public class testPDF {
 	 * cmd 启动命令	phantomjs C:/Users/ann/workspace/phantomjs-dome/js/demo.js
 	 */
 	public static void main(String[] args) {
-		PDFUtils.isTest = true;
 		// 启动demo
-		demo2();
+		zoomPDF();
 		System.out.println("end..");
 	}
 
 	/** 爬虫生成pdf+后台处理pdf **/
-	private static void demo() {
+	private static void creatPDF() {
 		// 模拟测试数据
 		//		String url = "http://news.baidu.com";
 		String url = "file:///C:/Users/ann/workspace/pdf-utils/src/main/webapp/html/test.html";
 		String outPath = "C:/Users/ann/Desktop/testPDF/001.pdf";
-		PDFUtils.phantomjs(url, outPath);
+		PDFUtils.isTest = true;
+		PDFUtils.create(url, outPath);
 		//		PDFUtils.phantomjs(url, outPath, format);
 		//		PDFUtils.phantomjs(url, outPath, width, height);
 	}
 
-	/** 爬虫生成pdf+后台处理pdf **/
-	private static void demo2() {
+	/** 缩放PDF **/
+	private static void zoomPDF() {
 		// 模拟测试数据
 		String sourcePath = "C:/Users/ann/Desktop/testPDF/001.pdf";
 		String outPath = "C:/Users/ann/Desktop/testPDF/002.pdf";
 		PDFUtils.zoom(sourcePath, outPath, 1, 0.5f, 200f);
+		//		PDFUtils.adaptiveZoom(sourcePath, outPath, 200f);
+		//		PDFUtils.percentageZoom(sourcePath, outPath, 0.5f);
 	}
 
 	/** 模拟测试数据 **/
@@ -61,7 +63,7 @@ public class testPDF {
 		//phantomjs C:/Users/ann/workspace/pdf-utils/src/main/webapp/res/js/phantomPDF.js "file:///C:/Users/ann/workspace/test/web/test.html" C:/Users/ann/Desktop/testPDF/overview.pdf 
 
 		//phantomjs C:/Users/ann/workspace/pdf-utils/src/main/webapp/res/js/phantomPDF.js "http://news.baidu.com/" C:/Users/ann/Desktop/testPDF/baidu.pdf 
-		
+
 		//phantomjs C:/Users/ann/workspace/pdf-utils/src/main/webapp/res/js/phantomPDF.js "file:///C:/Users/ann/workspace/test/web/01.html" C:/Users/ann/Desktop/testPDF/overview.pdf 
 		//phantomjs C:/Users/ann/workspace/pdf-utils/src/main/webapp/res/js/phantomPDF.js "file:///C:/Users/ann/workspace/pdf-utils/src/main/webapp/html/01.html" C:/Users/ann/Desktop/testPDF/overview.pdf 
 	}

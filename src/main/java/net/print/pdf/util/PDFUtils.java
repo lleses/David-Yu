@@ -31,33 +31,33 @@ public class PDFUtils {
 	public static boolean isTest = false;//是否测试模式,默认为false
 
 	/**
-	 * 爬虫生成PDF
+	 * 创建PDF
 	 * 
 	 * @param url
-	 * 			url路径
+	 * 			要打印的页面url路径
 	 * @param outPath
 	 * 			输出路径
 	 * @return
 	 */
-	public static boolean phantomjs(String url, String outPath) {
-		return phantomjs(url, outPath, null, null, null);
+	public static boolean create(String url, String outPath) {
+		return create(url, outPath, null, null, null);
 	}
 
 	/**
-	 * 爬虫生成PDF
+	 * 根据打印格式创建PDF
 	 * 
 	 * @param url
-	 * 			url路径
+	 * 			要打印的页面url路径
 	 * @param outPath
 	 * 			输出路径
 	 * @param format
 	 * 			打印格式:'A3', 'A4', 'A5', 'Legal', 'Letter', 'Tabloid'.
 	 * @return
 	 */
-	public static boolean phantomjs(String url, String outPath, String format) {
+	public static boolean createByFormat(String url, String outPath, String format) {
 		//检查打印格式是否正确
 		if (checkFormat(format)) {
-			return phantomjs(url, outPath, null, null, format);
+			return create(url, outPath, null, null, format);
 		}
 		return false;
 	}
@@ -74,10 +74,10 @@ public class PDFUtils {
 	}
 
 	/**
-	 * 爬虫生成PDF
+	 * 根据宽高创建PDF
 	 * 
 	 * @param url
-	 * 			url路径
+	 * 			要打印的页面url路径
 	 * @param outPath
 	 * 			输出路径
 	 * @param width
@@ -86,15 +86,15 @@ public class PDFUtils {
 	 * 			每页高度
 	 * @return
 	 */
-	public static boolean phantomjs(String url, String outPath, int width, int height) {
-		return phantomjs(url, outPath, width, height, null);
+	public static boolean createByWidthAndHeight(String url, String outPath, int width, int height) {
+		return create(url, outPath, width, height, null);
 	}
 
 	/**
-	 * 爬虫生成PDF
+	 * 创建PDF
 	 * 
 	 * @param url
-	 * 			url路径
+	 * 			要打印的页面url路径
 	 * @param outPath
 	 * 			输出路径
 	 * @param width
@@ -105,10 +105,17 @@ public class PDFUtils {
 	 * 			打印格式:'A3', 'A4', 'A5', 'Legal', 'Letter', 'Tabloid'.
 	 * @return
 	 */
-	private static boolean phantomjs(String url, String outPath, Integer width, Integer height, String format) {
+	private static boolean create(String url, String outPath, Integer width, Integer height, String format) {
 		if (url == null || outPath == null) {
 			return false;
 		}
+		//组装phantomjs的运行指令
+		String[] cmd = assemblyCmd(url, outPath, width, height, format);
+		return RunShell.run(cmd);
+	}
+
+	/** 组装phantomjs的运行指令 **/
+	private static String[] assemblyCmd(String url, String outPath, Integer width, Integer height, String format) {
 		String cmd4 = null;
 		if (width != null && height != null) {
 			cmd4 = width + "*" + height;
@@ -117,21 +124,27 @@ public class PDFUtils {
 			cmd4 = format;
 		}
 
-		String path = "C:/Users/ann/workspace/pdf-utils/src/main/webapp/res/js/phantomPDF.js";
-		if (isTest) {
-			path = "C:/Users/ann/workspace/pdf-utils/src/main/webapp/res/js/demo.js";
-		}
-
 		//组装进程命令
 		String[] cmd = new String[cmd4 == null ? 4 : 5];
 		cmd[0] = "phantomjs";
-		cmd[1] = path;
+		cmd[1] = getJsPath();
 		cmd[2] = url;
 		cmd[3] = outPath;
 		if (cmd4 != null) {
 			cmd[4] = cmd4;
 		}
-		return RunShell.run(cmd);
+		return cmd;
+	}
+
+	/** 获取Js路径 **/
+	private static String getJsPath() {
+		String path = PDFUtils.class.getResource("").getPath();
+		if (isTest) {
+			path += "demo.js";
+		} else {
+			path += "phantomPDF.js";
+		}
+		return path;
 	}
 
 	/**
