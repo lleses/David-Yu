@@ -9,21 +9,33 @@ public class testPDF {
 	 * cmd 启动命令	phantomjs C:/Users/ann/workspace/phantomjs-dome/js/demo.js
 	 */
 	public static void main(String[] args) {
-		// 启动demo
-		zoomPDF();
-		System.out.println("end..");
+		System.out.println("[创建PDF(不分页)]end.. :处理" + createNotPagingPDF());
+		System.out.println("[创建PDF(根据格式分页)]end.. :处理" + createPagingPDFByFormat());
+		System.out.println("[创建PDF(根据宽高分页)]end.. :处理" + createPagingPDFByWidthAndHeight());
 	}
 
-	/** 爬虫生成pdf+后台处理pdf **/
-	private static void creatPDF() {
-		// 模拟测试数据
-		//		String url = "http://news.baidu.com";
-		String url = "file:///C:/Users/ann/workspace/pdf-utils/src/main/webapp/html/test.html";
-		String outPath = "C:/Users/ann/Desktop/testPDF/001.pdf";
+	/** 创建PDF(不分页) **/
+	private static boolean createNotPagingPDF() {
+		String url = "http://news.baidu.com";
+		String outPath = "C:/Users/ann/Desktop/testPDF/createNotPagingPDF.pdf";
 		PDFUtils.isTest = true;
-		PDFUtils.create(url, outPath);
-		//		PDFUtils.phantomjs(url, outPath, format);
-		//		PDFUtils.phantomjs(url, outPath, width, height);
+		return PDFUtils.createNotPagingPDF(url, outPath);
+	}
+
+	/** 创建PDF(根据格式分页) **/
+	private static boolean createPagingPDFByFormat() {
+		String url = "http://news.baidu.com";
+		String outPath = "C:/Users/ann/Desktop/testPDF/createPagingPDFByFormat.pdf";
+		PDFUtils.isTest = true;
+		return PDFUtils.createPagingPDFByFormat(url, outPath, "A4");
+	}
+
+	/** 创建PDF(根据宽高分页) **/
+	private static boolean createPagingPDFByWidthAndHeight() {
+		String url = "http://news.baidu.com";
+		String outPath = "C:/Users/ann/Desktop/testPDF/createPagingPDFByWidthAndHeight.pdf";
+		PDFUtils.isTest = true;
+		return PDFUtils.createPagingPDFByWidthAndHeight(url, outPath, 200, 200);
 	}
 
 	/** 缩放PDF **/
@@ -31,9 +43,7 @@ public class testPDF {
 		// 模拟测试数据
 		String sourcePath = "C:/Users/ann/Desktop/testPDF/001.pdf";
 		String outPath = "C:/Users/ann/Desktop/testPDF/002.pdf";
-		PDFUtils.zoom(sourcePath, outPath, 1, 0.5f, 200f);
-		//		PDFUtils.adaptiveZoom(sourcePath, outPath, 200f);
-		//		PDFUtils.percentageZoom(sourcePath, outPath, 0.5f);
+//				PDFUtils.zoomPDByAdaptive(sourcePath, outPath, width)
 	}
 
 	/** 模拟测试数据 **/

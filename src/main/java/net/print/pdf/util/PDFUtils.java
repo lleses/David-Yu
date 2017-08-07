@@ -143,6 +143,9 @@ public class PDFUtils {
 		} else {
 			path += "phantomPDF.js";
 		}
+//		if ("/".equals(path.substring(0, 1)) || "\\".equals(path.substring(0, 1))) {
+//			path = path.substring(1);
+//		}
 		return path;
 	}
 
