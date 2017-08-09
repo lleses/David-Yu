@@ -37,7 +37,7 @@ public class PDFUtils {
 	 * 			要打印的页面url路径
 	 * @param outPath
 	 * 			输出路径
-	 * @return
+	 * @return	true:处理成功   / false:处理失败
 	 */
 	public static boolean createNotPagingPDF(String url, String outPath) {
 		return createPDF(url, outPath, null, null, null);
@@ -52,7 +52,7 @@ public class PDFUtils {
 	 * 			输出路径
 	 * @param format
 	 * 			打印格式:'A3', 'A4', 'A5', 'Legal', 'Letter', 'Tabloid'.
-	 * @return
+	 * @return	true:处理成功   / false:处理失败
 	 */
 	public static boolean createPagingPDFByFormat(String url, String outPath, String format) {
 		//检查打印格式是否正确
@@ -84,7 +84,7 @@ public class PDFUtils {
 	 * 			每页宽度
 	 * @param height
 	 * 			每页高度
-	 * @return
+	 * @return	true:处理成功   / false:处理失败
 	 */
 	public static boolean createPagingPDFByWidthAndHeight(String url, String outPath, int width, int height) {
 		return createPDF(url, outPath, width, height, null);
@@ -103,7 +103,7 @@ public class PDFUtils {
 	 * 			每页高度
 	 * @param format
 	 * 			打印格式:'A3', 'A4', 'A5', 'Legal', 'Letter', 'Tabloid'.
-	 * @return
+	 * @return	true:处理成功   / false:处理失败
 	 */
 	private static boolean createPDF(String url, String outPath, Integer width, Integer height, String format) {
 		if (url == null || outPath == null) {
@@ -159,9 +159,12 @@ public class PDFUtils {
 	 * 			输出文件的路径
 	 * @param width
 	 * 			打印的宽度
-	 * @return
+	 * @return	true:处理成功   / false:处理失败
 	 */
 	public static boolean zoomPDByAdaptive(String sourcePath, String outPath, float width) {
+		if (width <= 0) {
+			return false;//参数不正确
+		}
 		return zoomPDF(sourcePath, outPath, 1, null, width);
 	}
 
@@ -174,9 +177,13 @@ public class PDFUtils {
 	 * 			输出文件的路径
 	 * @param scale
 	 * 			百分比(0%-200%) 格式类似: 0.1, 0.12,......
-	 * @return
+	 * @return	true:处理成功   / false:处理失败
 	 */
 	public static boolean zoomPDFByPercentage(String sourcePath, String outPath, float scale) {
+		//如果缩放比例不在 0%-200%直接,则不处理 
+		if (scale > 2 || scale <= 0) {
+			return false;//参数不正确
+		}
 		return zoomPDF(sourcePath, outPath, 0, scale, null);
 	}
 
@@ -187,22 +194,15 @@ public class PDFUtils {
 	 * 			待处理文件的路径
 	 * @param outPath
 	 * 			输出文件的路径
-	 * @param zoomType
-	 * 			缩放类型:(0:百分百缩放;其他:自适应缩放)
+	 * @param printType
+	 * 			打印类型:(0:百分百;其他:自适应)
 	 * @param scale
 	 * 			百分比(0%-200%) 格式类似: 0.1, 0.12,......
 	 * @param width
 	 * 			打印的宽度
-	 * @return
+	 * @return true:处理成功   / false:处理失败
 	 */
-	private static boolean zoomPDF(String sourcePath, String outPath, int zoomType, Float scale, Float width) {
-		//检查参数是否正确
-		if (zoomType == 0 && (scale == null || scale > 2 || scale <= 0)) {
-			return false;
-		}
-		if (zoomType != 0 && width == null) {
-			return false;
-		}
+	private static boolean zoomPDF(String sourcePath, String outPath, int printType, Float scale, Float width) {
 		//检查文件是否存在		
 		if (!checkFileIsExist(sourcePath)) {
 			return false;
@@ -221,7 +221,7 @@ public class PDFUtils {
 		float pageWidth = 600;
 		float pageHeight = 600;
 		float zoom = 1;
-		if (zoomType == 0) {//百分比缩放(0%---100%)
+		if (printType == 0) {//百分比缩放(0%---100%)
 			zoom = scale;
 			pageWidth = pagesize.getWidth() * zoom;
 			pageHeight = pagesize.getHeight() * zoom;
@@ -253,11 +253,67 @@ public class PDFUtils {
 		return true;
 	}
 
-	/** 分页  **/
-	private boolean pagingPDF(PdfParams params, String fileName) {
+	/**
+	 * 分页PDF(根据百分百)
+	 * 
+	 * @param sourcePath
+	 * 			待处理文件的路径
+	 * @param outPath
+	 * 			输出文件的路径
+	 * @param printWidth
+	 * 			打印的宽度
+	 * @param printHeight
+	 * 			打印的高度
+	 * @return	true:处理成功   / false:处理失败
+	 */
+	public static boolean pagingPDFByPercentage(String sourcePath, String outPath, float printWidth, float printHeight) {
+		return pagingPDF(sourcePath, outPath, 0, printWidth, printHeight);
+	}
+
+	/**
+	 * 分页PDF(根据自适应)<br>
+	 * 
+	 * @param sourcePath
+	 * 			待处理文件的路径
+	 * @param outPath
+	 * 			输出文件的路径
+	 * @param printWidth
+	 * 			打印的宽度
+	 * @param printHeight
+	 * 			打印的高度
+	 * @return	true:处理成功   / false:处理失败
+	 */
+	public static boolean pagingPDFByAdaptive(String sourcePath, String outPath, float printWidth, float printHeight) {
+		return pagingPDF(sourcePath, outPath, 1, printWidth, printHeight);
+	}
+
+	/**
+	 * 分页PDF(处理逻辑):<br>
+	 * 	    1.检查PDF是否存在,并读取PDF<br>
+	 * 		2.获取PDF第一页的内容(如果存在多页,忽略第一页以外的内容)<br>	
+	 * 		3.根据需求切割第一页的内容,分成多页<br>
+	 * 		4.生成PDF<br>
+	 * @param sourcePath
+	 * 			待处理文件的路径
+	 * @param outPath
+	 * 			输出文件的路径
+	 * @param printType
+	 * 			打印类型:(0:百分百;其他:自适应)
+	 * @param printWidth
+	 * 			打印的宽度
+	 * @param printHeight
+	 * 			打印的高度
+	 * @return	true:处理成功   / false:处理失败
+	 */
+	private static boolean pagingPDF(String sourcePath, String outPath, int printType, float printWidth, float printHeight) {
+		//检查文件是否存在 
+		if (!checkFileIsExist(sourcePath)) {
+			return false;
+		}
+
 		PdfReader reader = null;// 获取pdf文件获取实例
 		try {
-			reader = new PdfReader(params.getPdfFolder() + fileName);
+			reader = new PdfReader(sourcePath);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -271,23 +327,21 @@ public class PDFUtils {
 		float width = pagesize.getWidth();// 爬虫生成的pdf宽度
 		float height = pagesize.getHeight();// 爬虫生成的pdf高度
 
-		float pageWidth = params.getWidth() - MARGIN_X * 2;// 减去边缘后的pdf宽度
-		float pageHeight = params.getHeight() - MARGIN_Y * 2;// 减去边缘后的pdf高度
 		int widthTotal = 1;// 宽页数
 		int heightTotal = 1;// 高页数
 
-		if (params.getFileScale() == 0) {// 左右分页
-			widthTotal = (int) (width / pageWidth);
-			if (width % pageWidth > 0) {
+		if (printType == 0) {// 左右分页(百分百)
+			widthTotal = (int) (width / printWidth);
+			if (width % printWidth > 0) {
 				widthTotal++;
 			}
-			heightTotal = (int) (height / pageHeight);
-			if (height % pageHeight > 0) {
+			heightTotal = (int) (height / printHeight);
+			if (height % printHeight > 0) {
 				heightTotal++;
 			}
-		} else {// 按宽等比率缩放
-			heightTotal = (int) (height / pageHeight);
-			if (height % pageHeight > 0) {
+		} else {// 按宽等比率缩放(自适应)
+			heightTotal = (int) (height / printHeight);
+			if (height % printHeight > 0) {
 				heightTotal++;
 			}
 
@@ -297,11 +351,11 @@ public class PDFUtils {
 
 		// --------------------------step 2--------------------------
 
-		Rectangle re = new Rectangle(pageWidth, pageHeight);// 矩形实例
+		Rectangle re = new Rectangle(printWidth, printHeight);// 矩形实例
 		Document document = new Document(re);
 		PdfWriter writer = null;
 		try {
-			writer = PdfWriter.getInstance(document, new FileOutputStream(params.getPdfFolder() + "paging.pdf"));
+			writer = PdfWriter.getInstance(document, new FileOutputStream(outPath));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (DocumentException e) {
@@ -322,9 +376,9 @@ public class PDFUtils {
 		float x, y;
 		for (int i = 0; i < pageTotal; i++) {
 			// 从左边开始,按纸张的宽度读取内容
-			x = -pageWidth * (i % widthTotal);
+			x = -printWidth * (i % widthTotal);
 			// 从头部开始,按纸张的高度读取内容
-			y = -(height - pageHeight * ((i / widthTotal) + 1));
+			y = -(height - printHeight * ((i / widthTotal) + 1));
 			// 在原页面中按纸张大小,不缩放,不旋转
 			content.addTemplate(page, x, y);
 			document.newPage();
