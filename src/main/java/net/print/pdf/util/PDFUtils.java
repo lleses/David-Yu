@@ -137,15 +137,16 @@ public class PDFUtils {
 
 	/** 获取爬虫Js文件路径 **/
 	private static String getPhantomJsPath() {
+		//TODO 考虑各种系统中的情况
 		String path = PDFUtils.class.getResource("").getPath();
 		if (isTest) {
 			path += "demo.js";
 		} else {
 			path += "phantomPDF.js";
 		}
-//		if ("/".equals(path.substring(0, 1)) || "\\".equals(path.substring(0, 1))) {
-//			path = path.substring(1);
-//		}
+		if ("/".equals(path.substring(0, 1)) || "\\".equals(path.substring(0, 1))) {
+			path = path.substring(1);
+		}
 		return path;
 	}
 
@@ -203,7 +204,7 @@ public class PDFUtils {
 			return false;
 		}
 		//检查文件是否存在		
-		if (checkFileIsExist(sourcePath)) {
+		if (!checkFileIsExist(sourcePath)) {
 			return false;
 		}
 
@@ -217,15 +218,16 @@ public class PDFUtils {
 		}
 		Rectangle pagesize = reader.getPageSize(1);
 
-		//自适应缩放
-		float pageWidth = width;
-		float zoom = pageWidth / pagesize.getWidth();
-		float pageHeight = pagesize.getHeight() * zoom;
-
-		//百分比缩放(0%---100%)
-		if (zoomType == 0) {
+		float pageWidth = 600;
+		float pageHeight = 600;
+		float zoom = 1;
+		if (zoomType == 0) {//百分比缩放(0%---100%)
 			zoom = scale;
 			pageWidth = pagesize.getWidth() * zoom;
+			pageHeight = pagesize.getHeight() * zoom;
+		} else {//自适应缩放
+			pageWidth = width;
+			zoom = pageWidth / pagesize.getWidth();
 			pageHeight = pagesize.getHeight() * zoom;
 		}
 
@@ -251,7 +253,7 @@ public class PDFUtils {
 		return true;
 	}
 
-	/** pdf缩放、裁剪、分页  **/
+	/** 分页  **/
 	private boolean pagingPDF(PdfParams params, String fileName) {
 		PdfReader reader = null;// 获取pdf文件获取实例
 		try {

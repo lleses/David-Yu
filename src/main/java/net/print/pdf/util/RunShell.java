@@ -21,7 +21,7 @@ public class RunShell {
 		}
 		if (result != null && result.length() > 0 && (result.indexOf("timeout") >= 0 || result.indexOf("FAIL to load") >= 0 || result.indexOf("Can't open") >= 0)) {
 			try {
-				throw new Exception("load file failed!");
+				throw new Exception(result);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
