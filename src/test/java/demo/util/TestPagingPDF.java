@@ -12,8 +12,8 @@ import net.print.pdf.util.PDFUtils;
  * @author David
  * @date   2017年8月9日
  */
-public class pagingPDF {
-	
+public class TestPagingPDF {
+
 	private static String url = "http://news.baidu.com";
 	private static String outFolderPath = "C:/Users/ann/Desktop/testPDF/";
 	private static String sourcePath = outFolderPath + "createNotPagingPDF.pdf";

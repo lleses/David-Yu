@@ -12,7 +12,7 @@ import net.print.pdf.util.PDFUtils;
  * @author David
  * @date   2017年8月9日
  */
-public class zoomPDF {
+public class TestZoomPDF {
 	/** URL **/
 	private static String url = "http://news.baidu.com";
 	/** 输出PDF的上一级文件夹路径 **/
