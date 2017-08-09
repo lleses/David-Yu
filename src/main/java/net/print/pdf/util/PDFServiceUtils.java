@@ -35,7 +35,7 @@ public class PDFServiceUtils {
 
 		//PDF添加页尾
 		String addFootToPdf = param.getOutFolderPath() + "addFootToPdf.pdf";
-		PDFUtils.addHeaderFooterToPdf(addFootToPdf, pagingPDF, "", param.getFooter());
+		PDFUtils.addHeaderFooterToPdf(pagingPDF, addFootToPdf, "", param.getFooter());
 	}
 
 }
