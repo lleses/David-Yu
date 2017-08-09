@@ -11,6 +11,8 @@ import com.itextpdf.text.pdf.PdfImportedPage;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import net.print.pdf.dto.HeadFootWithPDF;
+
 /**
  * PDF基础工具类
  * 
@@ -400,7 +402,7 @@ public class PDFUtils {
 		Document document = new Document(rec);
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(outPath));
 		// 页头页尾
-		PdfHeadFoot headerFooter = new PdfHeadFoot(header, reader.getNumberOfPages(), footer);
+		HeadFootWithPDF headerFooter = new HeadFootWithPDF(header, footer, reader.getNumberOfPages());
 		writer.setPageEvent(headerFooter);
 		document.open();
 

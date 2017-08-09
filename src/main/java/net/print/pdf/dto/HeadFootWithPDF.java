@@ -1,4 +1,4 @@
-package net.print.pdf.util;
+package net.print.pdf.dto;
 
 import java.io.IOException;
 
@@ -14,18 +14,18 @@ import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 
 /**
- * PDF页头/页尾
+ * PDF 页头/页尾
  * 
  * @author David
  * @date   2017年6月19日
  */
-public class PdfHeadFoot extends PdfPageEventHelper {
+public class HeadFootWithPDF extends PdfPageEventHelper {
 	/** 页头   **/
 	public String header;
 	/** 总页数 **/
 	public int nums;
-	/** 左下角内容 **/
-	public String leftBottomContent;
+	/** 页尾(左下角) **/
+	public String footer;
 
 	/** 模板  **/
 	public PdfTemplate total;
@@ -40,15 +40,15 @@ public class PdfHeadFoot extends PdfPageEventHelper {
 	 * 初始化
 	 * 
 	 * @param header
-	 * 			页头字符串 
+	 * 			页头 
 	 * @param footer
-	 * 			左下角页尾 
+	 * 			页尾(左下角)
 	 * @param nums
 	 * 			总页数 
 	 */
-	public PdfHeadFoot(String header, int nums, String footer) {
+	public HeadFootWithPDF(String header, String footer, int nums) {
 		this.header = header;
-		this.leftBottomContent = footer;
+		this.footer = footer;
 		this.nums = nums;
 	}
 
@@ -67,7 +67,7 @@ public class PdfHeadFoot extends PdfPageEventHelper {
 	public void onEndPage(PdfWriter writer, Document document) {
 		try {
 			if (bf == null) {
-				String fontPath = PdfHeadFoot.class.getResource("").getPath() + "arial-unicode-ms.ttf";
+				String fontPath = HeadFootWithPDF.class.getResource("").getPath() + "arial-unicode-ms.ttf";
 				bf = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 			}
 			if (fontDetail == null) {
@@ -92,7 +92,7 @@ public class PdfHeadFoot extends PdfPageEventHelper {
 		// ------------------------页脚 Page x of y pages------------------------
 		ColumnText.showTextAligned(writer.getDirectContent(), //
 				Element.ALIGN_LEFT, //
-				new Phrase(leftBottomContent, fontDetail), //
+				new Phrase(footer, fontDetail), //
 				5, //
 				10, 0);
 
