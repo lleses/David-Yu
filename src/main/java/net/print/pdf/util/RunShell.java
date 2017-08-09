@@ -11,23 +11,11 @@ import java.io.InputStream;
  */
 public class RunShell {
 
-	public static boolean run(String[] cmd) {
-		String result = "";
-		try {
-			result = execute(cmd);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
+	public static void run(String[] cmd) throws Exception {
+		String result = execute(cmd);
 		if (result != null && result.length() > 0 && (result.indexOf("timeout") >= 0 || result.indexOf("FAIL to load") >= 0 || result.indexOf("Can't open") >= 0)) {
-			try {
-				throw new Exception(result);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return false;
+			throw new Exception(result);
 		}
-		return true;
 	}
 
 	/** 执行shell **/

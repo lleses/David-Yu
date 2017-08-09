@@ -41,15 +41,15 @@ public class PdfHeadFoot extends PdfPageEventHelper {
 	 * 
 	 * @param header
 	 * 			页头字符串 
+	 * @param footer
+	 * 			左下角页尾 
 	 * @param nums
 	 * 			总页数 
-	 * @param leftBottomContent
-	 * 			左下角内容 
 	 */
-	public PdfHeadFoot(String header, int nums, String leftBottomContent) {
+	public PdfHeadFoot(String header, int nums, String footer) {
 		this.header = header;
+		this.leftBottomContent = footer;
 		this.nums = nums;
-		this.leftBottomContent = leftBottomContent;
 	}
 
 	/**

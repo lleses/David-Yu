@@ -1,7 +1,5 @@
 package net.print.pdf.util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -10,25 +8,23 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfImportedPage;
-import com.itextpdf.text.pdf.PdfPageEvent;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import net.print.pdf.dto.PDFHeadFoot;
-import net.print.pdf.dto.PdfParams;
-
 /**
- * PDF工具类
+ * PDF基础工具类
  * 
  * @author David
  * @date   2017年6月15日
  */
 public class PDFUtils {
 
-	private static final int MARGIN_X = 36;
-	private static final int MARGIN_Y = 36;
-
-	public static boolean isTest = false;//是否测试模式,默认为false
+	/** 打印类型(百分百) **/
+	private static final int PRINT_TYPE_PERCENTAGE = 0;
+	/** 打印类型(自适应) **/
+	private static final int PRINT_TYPE_ADAPTIVE = 1;
+	/** 是否测试模式,默认为false.(true:爬虫加载phantomPDF.js ,false:爬虫加载demo.js) **/
+	public static boolean isTest = false;
 
 	/**
 	 * 创建PDF(不分页)
@@ -39,8 +35,8 @@ public class PDFUtils {
 	 * 			输出路径
 	 * @return	true:处理成功   / false:处理失败
 	 */
-	public static boolean createNotPagingPDF(String url, String outPath) {
-		return createPDF(url, outPath, null, null, null);
+	public static void createNotPagingPDF(String url, String outPath) throws Exception {
+		createPDF(url, outPath, null, null, null);
 	}
 
 	/**
@@ -54,12 +50,11 @@ public class PDFUtils {
 	 * 			打印格式:'A3', 'A4', 'A5', 'Legal', 'Letter', 'Tabloid'.
 	 * @return	true:处理成功   / false:处理失败
 	 */
-	public static boolean createPagingPDFByFormat(String url, String outPath, String format) {
+	public static void createPagingPDFByFormat(String url, String outPath, String format) throws Exception {
 		//检查打印格式是否正确
 		if (checkFormat(format)) {
-			return createPDF(url, outPath, null, null, format);
+			createPDF(url, outPath, null, null, format);
 		}
-		return false;
 	}
 
 	/** 检查打印格式是否正确 **/
@@ -86,8 +81,8 @@ public class PDFUtils {
 	 * 			每页高度
 	 * @return	true:处理成功   / false:处理失败
 	 */
-	public static boolean createPagingPDFByWidthAndHeight(String url, String outPath, int width, int height) {
-		return createPDF(url, outPath, width, height, null);
+	public static void createPagingPDFByWidthAndHeight(String url, String outPath, int width, int height) throws Exception {
+		createPDF(url, outPath, width, height, null);
 	}
 
 	/**
@@ -105,12 +100,12 @@ public class PDFUtils {
 	 * 			打印格式:'A3', 'A4', 'A5', 'Legal', 'Letter', 'Tabloid'.
 	 * @return	true:处理成功   / false:处理失败
 	 */
-	private static boolean createPDF(String url, String outPath, Integer width, Integer height, String format) {
+	private static void createPDF(String url, String outPath, Integer width, Integer height, String format) throws Exception {
 		if (url == null || outPath == null) {
-			return false;
+			return;
 		}
 		String[] cmd = assemblyCmd(url, outPath, width, height, format);//组装phantomjs的运行指令
-		return RunShell.run(cmd);//运行
+		RunShell.run(cmd);
 	}
 
 	/** 组装phantomjs的运行指令 **/
@@ -157,15 +152,15 @@ public class PDFUtils {
 	 * 			待处理文件的路径
 	 * @param outPath
 	 * 			输出文件的路径
-	 * @param width
+	 * @param printWidth
 	 * 			打印的宽度
 	 * @return	true:处理成功   / false:处理失败
 	 */
-	public static boolean zoomPDByAdaptive(String sourcePath, String outPath, float width) {
-		if (width <= 0) {
-			return false;//参数不正确
+	public static void zoomPDByAdaptive(String sourcePath, String outPath, float printWidth) throws DocumentException, IOException {
+		if (printWidth <= 0) {
+			return;//参数不正确
 		}
-		return zoomPDF(sourcePath, outPath, 1, null, width);
+		zoomPDF(sourcePath, outPath, PRINT_TYPE_ADAPTIVE, null, printWidth);
 	}
 
 	/**
@@ -179,12 +174,12 @@ public class PDFUtils {
 	 * 			百分比(0%-200%) 格式类似: 0.1, 0.12,......
 	 * @return	true:处理成功   / false:处理失败
 	 */
-	public static boolean zoomPDFByPercentage(String sourcePath, String outPath, float scale) {
+	public static void zoomPDFByPercentage(String sourcePath, String outPath, float scale) throws DocumentException, IOException {
 		//如果缩放比例不在 0%-200%直接,则不处理 
 		if (scale > 2 || scale <= 0) {
-			return false;//参数不正确
+			return;//参数不正确
 		}
-		return zoomPDF(sourcePath, outPath, 0, scale, null);
+		zoomPDF(sourcePath, outPath, PRINT_TYPE_PERCENTAGE, scale, null);
 	}
 
 	/**
@@ -202,55 +197,34 @@ public class PDFUtils {
 	 * 			打印的宽度
 	 * @return true:处理成功   / false:处理失败
 	 */
-	private static boolean zoomPDF(String sourcePath, String outPath, int printType, Float scale, Float width) {
-		//检查文件是否存在		
-		if (!checkFileIsExist(sourcePath)) {
-			return false;
-		}
+	public static void zoomPDF(String sourcePath, String outPath, int printType, Float scale, Float printWidth) throws DocumentException, IOException {
 
 		//读取PDF
-		PdfReader reader = null;
-		try {
-			reader = new PdfReader(sourcePath);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
+		PdfReader reader = new PdfReader(sourcePath);
 		Rectangle pagesize = reader.getPageSize(1);
 
 		float pageWidth = 600;
 		float pageHeight = 600;
 		float zoom = 1;
-		if (printType == 0) {//百分比缩放(0%---100%)
+		if (printType == PRINT_TYPE_PERCENTAGE) {//百分比缩放(0%---100%)
 			zoom = scale;
 			pageWidth = pagesize.getWidth() * zoom;
 			pageHeight = pagesize.getHeight() * zoom;
 		} else {//自适应缩放
-			pageWidth = width;
+			pageWidth = printWidth;
 			zoom = pageWidth / pagesize.getWidth();
 			pageHeight = pagesize.getHeight() * zoom;
 		}
 
 		//开始生成PDF
 		Document document = new Document(new Rectangle(pageWidth, pageHeight));
-		PdfWriter writer = null;
-		try {
-			writer = PdfWriter.getInstance(document, new FileOutputStream(outPath));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (DocumentException e) {
-			e.printStackTrace();
-		}
-		if (writer == null) {
-			return false;
-		}
+		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(outPath));
 		document.open();
 		PdfContentByte content = writer.getDirectContent();
 		PdfImportedPage page = writer.getImportedPage(reader, 1);
 		content.addTemplate(page, zoom, 0, 0, zoom, 0, 0);//在原页面中按纸张大小,按比率缩放,不旋转
 		document.close();
 		reader.close();
-		return true;
 	}
 
 	/**
@@ -266,8 +240,8 @@ public class PDFUtils {
 	 * 			打印的高度
 	 * @return	true:处理成功   / false:处理失败
 	 */
-	public static boolean pagingPDFByPercentage(String sourcePath, String outPath, float printWidth, float printHeight) {
-		return pagingPDF(sourcePath, outPath, 0, printWidth, printHeight);
+	public static void pagingPDFByPercentage(String sourcePath, String outPath, float printWidth, float printHeight) throws IOException, DocumentException {
+		pagingPDF(sourcePath, outPath, PRINT_TYPE_PERCENTAGE, printWidth, printHeight);
 	}
 
 	/**
@@ -283,16 +257,13 @@ public class PDFUtils {
 	 * 			打印的高度
 	 * @return	true:处理成功   / false:处理失败
 	 */
-	public static boolean pagingPDFByAdaptive(String sourcePath, String outPath, float printWidth, float printHeight) {
-		return pagingPDF(sourcePath, outPath, 1, printWidth, printHeight);
+	public static void pagingPDFByAdaptive(String sourcePath, String outPath, float printWidth, float printHeight) throws IOException, DocumentException {
+		pagingPDF(sourcePath, outPath, PRINT_TYPE_ADAPTIVE, printWidth, printHeight);
 	}
 
 	/**
-	 * 分页PDF(处理逻辑):<br>
-	 * 	    1.检查PDF是否存在,并读取PDF<br>
-	 * 		2.获取PDF第一页的内容(如果存在多页,忽略第一页以外的内容)<br>	
-	 * 		3.根据需求切割第一页的内容,分成多页<br>
-	 * 		4.生成PDF<br>
+	 * 分页PDF
+	 * 
 	 * @param sourcePath
 	 * 			待处理文件的路径
 	 * @param outPath
@@ -303,23 +274,17 @@ public class PDFUtils {
 	 * 			打印的宽度
 	 * @param printHeight
 	 * 			打印的高度
-	 * @return	true:处理成功   / false:处理失败
+	 * @return	true:处理成功   / false:处理失败<br><br>
+	 * 
+	 * 处理逻辑:<br>
+	 * 	    1.检查PDF是否存在,并读取PDF<br>
+	 * 		2.获取PDF第一页的内容(如果存在多页,忽略第一页以外的内容)<br>	
+	 * 		3.根据需求切割第一页的内容,分成多页<br>
+	 * 		4.生成PDF<br>
 	 */
-	private static boolean pagingPDF(String sourcePath, String outPath, int printType, float printWidth, float printHeight) {
-		//检查文件是否存在 
-		if (!checkFileIsExist(sourcePath)) {
-			return false;
-		}
+	public static void pagingPDF(String sourcePath, String outPath, int printType, float printWidth, float printHeight) throws IOException, DocumentException {
 
-		PdfReader reader = null;// 获取pdf文件获取实例
-		try {
-			reader = new PdfReader(sourcePath);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		if (reader == null) {
-			return false;
-		}
+		PdfReader reader = new PdfReader(sourcePath);// 获取pdf文件获取实例
 
 		// --------------------------step 1--------------------------
 
@@ -330,7 +295,7 @@ public class PDFUtils {
 		int widthTotal = 1;// 宽页数
 		int heightTotal = 1;// 高页数
 
-		if (printType == 0) {// 左右分页(百分百)
+		if (printType == PRINT_TYPE_PERCENTAGE) {// 左右分页(百分百)
 			widthTotal = (int) (width / printWidth);
 			if (width % printWidth > 0) {
 				widthTotal++;
@@ -353,18 +318,7 @@ public class PDFUtils {
 
 		Rectangle re = new Rectangle(printWidth, printHeight);// 矩形实例
 		Document document = new Document(re);
-		PdfWriter writer = null;
-		try {
-			writer = PdfWriter.getInstance(document, new FileOutputStream(outPath));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (DocumentException e) {
-			e.printStackTrace();
-		}
-
-		if (writer == null) {
-			return false;
-		}
+		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(outPath));
 
 		// --------------------------step 3--------------------------
 		document.open();
@@ -387,89 +341,52 @@ public class PDFUtils {
 		// --------------------------step 5--------------------------
 		document.close();
 		reader.close();
-		return true;
 	}
-
-	/** 创建最终的ＰＤＦ文件 **/
-	private boolean convertPDF(PdfParams params, String fileName) {
-		// 读取原PDF文件,取出页面总数
-		PdfReader reader = null;
-		try {
-			reader = new PdfReader(params.getPdfFolder() + fileName);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		if (reader == null) {
-			return false;
-		}
-
-		int n = reader.getNumberOfPages();
-
-		// 初始化PDF Document
-		Float pageWidth = params.getWidth();
-		Float pageHeight = params.getHeight();
-		Rectangle rectangle = reader.getPageSizeWithRotation(1);
-		if ((pageWidth == null || pageHeight == null) && rectangle != null) {
-			pageWidth = rectangle.getWidth() + 2 * MARGIN_X;
-			pageHeight = rectangle.getHeight() + 2 * MARGIN_Y;
-		}
-
-		Rectangle re = new Rectangle(pageWidth, pageHeight);
-		Document document = new Document(re, MARGIN_X, MARGIN_Y, MARGIN_X, MARGIN_Y);
-		PdfWriter writer = null;
-		try {
-			writer = PdfWriter.getInstance(document, new FileOutputStream(params.getOutPath()));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (DocumentException e) {
-			e.printStackTrace();
-		}
-		if (writer == null) {
-			return false;
-		}
-
-		// 添加页脚
-		PDFHeadFoot header = new PDFHeadFoot();
-		header.setWidth(pageWidth);
-		header.setHeader("Printed by " + params.getUserName() + ", " + params.getDateTime());
-		writer.setPageEvent((PdfPageEvent) header);
-		document.open();
-
-		PdfContentByte content = writer.getDirectContent();
-		PdfImportedPage page = null;
-		for (int i = 1; i <= n; i++) {
-			page = writer.getImportedPage(reader, i);
-			// 将原文件中的内容放入新的文件中,并确定好绝对定位
-			content.addTemplate(page, MARGIN_X, MARGIN_Y);
-			document.newPage();
-		}
-
-		// step 4
-		document.close();
-		reader.close();
-		return true;
-	}
-
-	//TODO
-	private void createFolder(String folder) throws Exception {
-		File file = new File(folder);
-		if (!file.exists()) {
-			file.mkdirs();
-		}
-	}
-
-	//TODO
 
 	/**
-	 * pdf添加页头，页尾等信息
+	 * PDF添加页头
 	 * 
-	 * @param outputFilePath
-	 * 				输出路径
-	 * @param sourceFilePath
-	 * 				源文件路径
+	 * @param sourcePath
+	 * 			待处理文件的路径
+	 * @param outPath
+	 * 			输出文件的路径
+	 * @param header
+	 * 			页头
 	 */
-	public void headFootPdf(String outputFilePath, String sourceFilePath, String header, String leftBottomContent) throws IOException, DocumentException {
-		PdfReader reader = new PdfReader(sourceFilePath);
+	public static void addHeaderToPdf(String sourcePath, String outPath, String header) throws IOException, DocumentException {
+		//注:缺省值footer不能用null, 要用""
+		addHeaderFooterToPdf(sourcePath, outPath, header, "");
+	}
+
+	/**
+	 * PDF添加页尾
+	 * 
+	 * @param sourcePath
+	 * 			待处理文件的路径
+	 * @param outPath
+	 * 			输出文件的路径
+	 * @param footer
+	 * 			页脚
+	 */
+	public static void addFooterToPdf(String sourcePath, String outPath, String footer) throws IOException, DocumentException {
+		//注:缺省值header不能用null, 要用""
+		addHeaderFooterToPdf(sourcePath, outPath, "", footer);
+	}
+
+	/**
+	 * PDF添加页尾
+	 * 
+	 * @param sourcePath
+	 * 			待处理文件的路径
+	 * @param outPath
+	 * 			输出文件的路径
+	 * @param header
+	 * 			页头
+	 * @param footer
+	 * 			页脚
+	 */
+	public static void addHeaderFooterToPdf(String sourcePath, String outPath, String header, String footer) throws IOException, DocumentException {
+		PdfReader reader = new PdfReader(sourcePath);
 		int margin_x = 36;
 		int margin_y = 36;
 		int num = reader.getNumberOfPages();
@@ -481,9 +398,9 @@ public class PDFUtils {
 		Rectangle rec = new Rectangle(width + 2 * margin_x, pag.getHeight() + 2 * margin_y);
 
 		Document document = new Document(rec);
-		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(outputFilePath));
+		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(outPath));
 		// 页头页尾
-		PdfHeadFoot headerFooter = new PdfHeadFoot(header, reader.getNumberOfPages(), leftBottomContent);
+		PdfHeadFoot headerFooter = new PdfHeadFoot(header, reader.getNumberOfPages(), footer);
 		writer.setPageEvent(headerFooter);
 		document.open();
 
@@ -502,12 +419,4 @@ public class PDFUtils {
 		document.close();
 	}
 
-	/** 检查文件是否存在 **/
-	private static boolean checkFileIsExist(String path) {
-		File file = new File(path);
-		if (file != null && file.exists()) {
-			return true;
-		}
-		return false;
-	}
 }
