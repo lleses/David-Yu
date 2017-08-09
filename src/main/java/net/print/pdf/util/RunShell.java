@@ -12,10 +12,8 @@ import java.io.InputStream;
 public class RunShell {
 
 	public static void run(String[] cmd) throws Exception {
-		String result = execute(cmd);
-		if (result != null && result.length() > 0 && (result.indexOf("timeout") >= 0 || result.indexOf("FAIL to load") >= 0 || result.indexOf("Can't open") >= 0)) {
-			throw new Exception(result);
-		}
+		String result = execute(cmd);//执行shell
+		checkShellIsSucces(result);//判断脚本运行是否成功.出错则抛出异常
 	}
 
 	/** 执行shell **/
@@ -33,5 +31,13 @@ public class RunShell {
 		child.getOutputStream().close();
 		child.getErrorStream().close();
 		return sb.toString();
+	}
+
+	/** 判断脚本运行是否成功.出错则抛出异常 **/
+	private static void checkShellIsSucces(String result) throws Exception {
+		boolean checkResult = result.indexOf("timeout") >= 0 || result.indexOf("FAIL to load") >= 0 || result.indexOf("Can't open") >= 0;
+		if (result != null && result.length() > 0 && (checkResult)) {
+			throw new Exception(result);
+		}
 	}
 }

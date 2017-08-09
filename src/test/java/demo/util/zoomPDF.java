@@ -48,7 +48,7 @@ public class zoomPDF {
 	}
 
 	/** 缩放PDF(根据百分比) **/
-	private static void zoomPDFByPercentage() throws DocumentException, IOException {
+	private static void zoomPDFByPercentage() throws Exception {
 		String sourcePath = outFolderPath + "createNotPagingPDF.pdf";
 		String outPath = outFolderPath + "zoomPDFByPercentage.pdf";
 		PDFUtils.zoomPDFByPercentage(sourcePath, outPath, 0.5f);

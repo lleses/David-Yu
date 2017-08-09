@@ -176,10 +176,9 @@ public class PDFUtils {
 	 * 			百分比(0%-200%) 格式类似: 0.1, 0.12,......
 	 * @return	true:处理成功   / false:处理失败
 	 */
-	public static void zoomPDFByPercentage(String sourcePath, String outPath, float scale) throws DocumentException, IOException {
-		//如果缩放比例不在 0%-200%直接,则不处理 
-		if (scale > 2 || scale <= 0) {
-			return;//参数不正确
+	public static void zoomPDFByPercentage(String sourcePath, String outPath, float scale) throws Exception {
+		if (scale < 0) {
+			throw new Exception("[PDFUtils.zoomPDFByPercentage] Cause by: scale neet to 'scale>0' !");
 		}
 		zoomPDF(sourcePath, outPath, PRINT_TYPE_PERCENTAGE, scale, null);
 	}
