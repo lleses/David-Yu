@@ -8,11 +8,12 @@ import java.util.Arrays;
  * @author David
  * @date   2017年6月15日
  */
+@Deprecated
 public class PdfParams {
 
 	/** cmd指令 **/
 	private String[] cmd;
-	
+
 	/** 实际打印的pdf宽度 **/
 	private Float width;
 	/** 实际打印的pdf高度 **/
@@ -27,7 +28,7 @@ public class PdfParams {
 	private int fileScale;
 	/** 缩放比例(0-100%) **/
 	private Float fileWidthScale;
-	
+
 	/** 打印的名称 **/
 	private String userName;
 	/** 打印的时间 **/

@@ -67,7 +67,7 @@ public class PDFServiceUtils {
 		if (param.getPrintHeight() == null || param.getPrintHeight() <= 0) {
 			throw new Exception("[PDFServiceUtils.overview] Cause by: printHeight is null or printHeight<=0 !");
 		}
-		//当printType=0 , scale不能为空
+		//当printType=0 , scale不能为空而且要在 0%-200%的区间内
 		boolean checkScale = param.getScale() == null || param.getScale() < 0 || param.getScale() > 2;
 		if (param.getPrintType() == PRINT_TYPE_PERCENTAGE && checkScale) {
 			throw new Exception("[PDFServiceUtils.overview] Cause by:when PrintType=0, Scale is null or it not in 0%-200% !");
