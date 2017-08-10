@@ -1,9 +1,5 @@
 package demo.util;
 
-import java.io.IOException;
-
-import com.itextpdf.text.DocumentException;
-
 import net.print.pdf.util.PDFUtils;
 
 /**
@@ -41,7 +37,7 @@ public class TestZoomPDF {
 	}
 
 	/** 缩放PDF(通过自适应) **/
-	private static void zoomPDByAdaptive() throws DocumentException, IOException {
+	private static void zoomPDByAdaptive() throws Exception {
 		String sourcePath = outFolderPath + "createNotPagingPDF.pdf";
 		String outPath = outFolderPath + "zoomPDByAdaptive.pdf";
 		PDFUtils.zoomPDByAdaptive(sourcePath, outPath, 300);

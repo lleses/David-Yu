@@ -53,21 +53,19 @@ public class PDFUtils {
 	 * @return	true:处理成功   / false:处理失败
 	 */
 	public static void createPagingPDFByFormat(String url, String outPath, String format) throws Exception {
-		//检查打印格式是否正确
-		if (checkFormat(format)) {
-			createPDF(url, outPath, null, null, format);
-		}
+		checkFormat(format);//检查打印格式是否正确
+		createPDF(url, outPath, null, null, format);
 	}
 
 	/** 检查打印格式是否正确 **/
-	private static boolean checkFormat(String format) {
+	private static void checkFormat(String format) throws Exception {
 		String[] arr = { "A3", "A4", "A5", "Legal", "Letter", "Tabloid" };
 		for (String type : arr) {
 			if (type.equals(format)) {
-				return true;
+				return;
 			}
 		}
-		return false;
+		throw new Exception("[PDFUtils.createPagingPDFByFormat] Cause by:printFormat=" + format + ",  printFormat must in (A3,A4,A5,Legal,Letter,Tabloid) !");
 	}
 
 	/**
@@ -84,7 +82,15 @@ public class PDFUtils {
 	 * @return	true:处理成功   / false:处理失败
 	 */
 	public static void createPagingPDFByWidthAndHeight(String url, String outPath, int width, int height) throws Exception {
+		checkWidthAndHeight(width, height);//检查宽高是否符合要求
 		createPDF(url, outPath, width, height, null);
+	}
+
+	/** 检查宽高是否符合要求 **/
+	private static void checkWidthAndHeight(int width, int height) throws Exception {
+		if (width < 0 || height < 0) {
+			throw new Exception("[PDFUtils.createPagingPDFByWidthAndHeight] Cause by:width=" + width + ",height=" + height + ", width and height must > 0 !");
+		}
 	}
 
 	/**
@@ -104,7 +110,7 @@ public class PDFUtils {
 	 */
 	private static void createPDF(String url, String outPath, Integer width, Integer height, String format) throws Exception {
 		if (url == null || outPath == null) {
-			return;
+			throw new Exception("[PDFUtils.createPDF] Cause by: url is null or outPath is null !");
 		}
 		String[] cmd = assemblyCmd(url, outPath, width, height, format);//组装phantomjs的运行指令
 		RunShell.run(cmd);
@@ -148,7 +154,8 @@ public class PDFUtils {
 	}
 
 	/**
-	 * 缩放PDF(通过自适应)
+	 * 缩放PDF(通过自适应)<br>
+	 * [注:如果待处理PDF存在多张,则只会处理第一张,忽略其他]
 	 * 
 	 * @param sourcePath
 	 * 			待处理文件的路径
@@ -158,15 +165,16 @@ public class PDFUtils {
 	 * 			打印的宽度
 	 * @return	true:处理成功   / false:处理失败
 	 */
-	public static void zoomPDByAdaptive(String sourcePath, String outPath, float printWidth) throws DocumentException, IOException {
+	public static void zoomPDByAdaptive(String sourcePath, String outPath, float printWidth) throws Exception {
 		if (printWidth <= 0) {
-			return;//参数不正确
+			throw new Exception("[PDFUtils.zoomPDByAdaptive] Cause by: printWidth=" + printWidth + ", printWidth must > 0 !");
 		}
 		zoomPDF(sourcePath, outPath, PRINT_TYPE_ADAPTIVE, null, printWidth);
 	}
 
 	/**
-	 * 缩放PDF(根据百分比)
+	 * 缩放PDF(根据百分比)<br>
+	 * [注:如果待处理PDF存在多张,则只会处理第一张,忽略其他]
 	 * 
 	 * @param sourcePath
 	 * 			待处理文件的路径
@@ -178,13 +186,14 @@ public class PDFUtils {
 	 */
 	public static void zoomPDFByPercentage(String sourcePath, String outPath, float scale) throws Exception {
 		if (scale < 0) {
-			throw new Exception("[PDFUtils.zoomPDFByPercentage] Cause by: scale neet to 'scale>0' !");
+			throw new Exception("[PDFUtils.zoomPDFByPercentage] Cause by:scale=" + scale + ", scale neet to 'scale>0' !");
 		}
 		zoomPDF(sourcePath, outPath, PRINT_TYPE_PERCENTAGE, scale, null);
 	}
 
 	/**
-	 * 缩放PDF
+	 * 缩放PDF<br>
+	 * [注:如果待处理PDF存在多张,则只会处理第一张,忽略其他]
 	 * 
 	 * @param sourcePath
 	 * 			待处理文件的路径
