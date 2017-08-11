@@ -208,8 +208,6 @@ public class PDFUtils {
 	 * @return true:处理成功   / false:处理失败
 	 */
 	public static void zoomPDF(String sourcePath, String outPath, int printType, Float scale, Float printWidth) throws DocumentException, IOException {
-
-		//读取PDF
 		PdfReader reader = new PdfReader(sourcePath);
 		Rectangle pagesize = reader.getPageSize(1);
 
@@ -293,11 +291,7 @@ public class PDFUtils {
 	 * 		4.生成PDF<br>
 	 */
 	public static void pagingPDF(String sourcePath, String outPath, int printType, float printWidth, float printHeight) throws IOException, DocumentException {
-
-		PdfReader reader = new PdfReader(sourcePath);// 获取pdf文件获取实例
-
-		// --------------------------step 1--------------------------
-
+		PdfReader reader = new PdfReader(sourcePath);
 		Rectangle pagesize = reader.getPageSizeWithRotation(1);
 		float width = pagesize.getWidth();// 爬虫生成的pdf宽度
 		float height = pagesize.getHeight();// 爬虫生成的pdf高度
@@ -347,8 +341,6 @@ public class PDFUtils {
 			content.addTemplate(page, x, y);
 			document.newPage();
 		}
-
-		// --------------------------step 5--------------------------
 		document.close();
 		reader.close();
 	}
