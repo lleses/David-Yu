@@ -165,7 +165,7 @@ public class PDFUtils {
 	 * 			打印的宽度
 	 * @return	true:处理成功   / false:处理失败
 	 */
-	public static void zoomPDByAdaptive(String sourcePath, String outPath, float printWidth) throws Exception {
+	public static void zoomPDFByAdaptive(String sourcePath, String outPath, float printWidth) throws Exception {
 		if (printWidth <= 0) {
 			throw new Exception("[PDFUtils.zoomPDByAdaptive] Cause by: printWidth=" + printWidth + ", printWidth must > 0 !");
 		}

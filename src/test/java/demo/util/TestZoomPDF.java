@@ -40,7 +40,7 @@ public class TestZoomPDF {
 	private static void zoomPDByAdaptive() throws Exception {
 		String sourcePath = outFolderPath + "createNotPagingPDF.pdf";
 		String outPath = outFolderPath + "zoomPDByAdaptive.pdf";
-		PDFUtils.zoomPDByAdaptive(sourcePath, outPath, 300);
+		PDFUtils.zoomPDFByAdaptive(sourcePath, outPath, 300);
 	}
 
 	/** 缩放PDF(根据百分比) **/
