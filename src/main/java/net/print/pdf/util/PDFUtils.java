@@ -21,7 +21,7 @@ import net.print.pdf.dto.HeadFootWithPDF;
  */
 public class PDFUtils {
 
-	/** 打印类型(百分百) **/
+	/** 打印类型(百分比) **/
 	private static final int PRINT_TYPE_PERCENTAGE = 0;
 	/** 打印类型(自适应) **/
 	private static final int PRINT_TYPE_ADAPTIVE = 1;
